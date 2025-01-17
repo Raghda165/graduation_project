@@ -69,7 +69,7 @@ correlation, p_value = spearmanr(data[ 'location'], data['duration'])
 
 
 # # Read the data
-real_data = pd.read_csv('real1.csv', header=0)
+real_data = pd.read_csv('real2.csv', header=0)
 
 
 # # Convert ep_end_date to datetime
@@ -105,7 +105,7 @@ print(real_data)
 real_data['region'] = real_data['region'].apply(lambda x: int(x.split(',')[0]) if isinstance(x, str) and ',' in x else int(x) if str(x).isdigit() else 0)
 
 real_data['region'] = real_data['region'].astype(int)
-exclude_columns = ['duration', 'censored', 'conflict_id', 'start_date2', 'start_date','start_prec2','conflict_id','location','side_a','side_b','side_b_id','side_a_id','ep_end_date','year','ep_end']
+exclude_columns = ['duration', 'censored', 'conflict_id', 'start_date2', 'start_date','start_prec2','conflict_id','location','side_a','side_b','side_b_id','side_a_id','ep_end_date','year','ep_end','cumulative_intensity','intensity_level','lose_of_leadership']
 
 # Select feature columns (X) by dropping the exclude_columns
 X = real_data.drop(columns=exclude_columns)
@@ -193,12 +193,13 @@ train_columns = X.columns
 print(train_columns)
 new_data = pd.DataFrame({
 	'incompatibility': [2],
-    'intensity_level': [3],
-    'cumulative_intensity': [10],
     'type_of_conflict': [2],
     'start_prec': [5],
     'region': [1],
-    # Add other necessary features
+	'agreement_or_ceasfire': [0],
+	'victory_of_one_side':[1],
+	'external_intervention': [1],
+
 })
 
 # Predict the duration for the new row (event duration)
