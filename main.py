@@ -10,6 +10,7 @@ from sklearn.inspection import permutation_importance
 from sksurv.metrics import concordance_index_ipcw
 import scipy.stats as st
 from scipy.stats import sem
+from sksurv.metrics import concordance_index_censored
 
 
 # from sksurv.metrics import concordance_index_censored
@@ -185,6 +186,15 @@ if len(c_indices) > 1:
     print(f'95% Confidence Interval: ({ci_low:.4f}, {ci_high:.4f})')
 else:
     print("Not enough data points for a valid confidence interval.")
+train_c_index = concordance_index_censored(y_train['event'], y_train['time'], rsf.predict(X_train))[0]
+
+# Validation performance
+val_c_index = concordance_index_censored(
+    y_test['event'], y_test['time'], rsf.predict(X_test)
+)[0]
+
+print(f"Training C-Index: {train_c_index:.3f}")
+print(f"Validation C-Index: {val_c_index:.3f}")
 # import pandas as pd
 
 # # Assuming 'rsf' is your trained Random Survival Forest model
